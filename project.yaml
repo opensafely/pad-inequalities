@@ -1,8 +1,193 @@
 version: '5.0'
-
 actions:
-  generate_dataset:
-    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/dataset.csv.gz
+  generate_incident:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/raw/incident.csv.gz
+      -- --cohort incident
+    needs: []
     outputs:
       highly_sensitive:
-        dataset: output/dataset.csv.gz
+        dataset: output/raw/incident.csv.gz
+  generate_procedure:
+    run: ehrql:v1 generate-dataset analysis/dataset_definition.py --output output/raw/procedure.csv.gz
+      -- --cohort procedure
+    needs: []
+    outputs:
+      highly_sensitive:
+        dataset: output/raw/procedure.csv.gz
+  generate_trends_2017:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2017.csv
+      -- --year 2017 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2017.csv
+  generate_trends_2018:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2018.csv
+      -- --year 2018 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2018.csv
+  generate_trends_2019:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2019.csv
+      -- --year 2019 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2019.csv
+  generate_trends_2020:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2020.csv
+      -- --year 2020 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2020.csv
+  generate_trends_2021:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2021.csv
+      -- --year 2021 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2021.csv
+  generate_trends_2022:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2022.csv
+      -- --year 2022 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2022.csv
+  generate_trends_2023:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2023.csv
+      -- --year 2023 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2023.csv
+  generate_trends_2024:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2024.csv
+      -- --year 2024 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2024.csv
+  generate_trends_2025:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/trends_2025.csv
+      -- --year 2025 --mode trends
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/trends_2025.csv
+  generate_covid_2020:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2020.csv
+      -- --year 2020 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2020.csv
+  generate_covid_2021:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2021.csv
+      -- --year 2021 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2021.csv
+  generate_covid_2022:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2022.csv
+      -- --year 2022 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2022.csv
+  generate_covid_2023:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2023.csv
+      -- --year 2023 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2023.csv
+  generate_covid_2024:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2024.csv
+      -- --year 2024 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2024.csv
+  generate_covid_2025:
+    run: ehrql:v1 generate-measures analysis/measures_definition.py --output output/raw/covid_2025.csv
+      -- --year 2025 --mode covid
+    needs: []
+    outputs:
+      highly_sensitive:
+        measures: output/raw/covid_2025.csv
+  prepare:
+    run: r:v2 analysis/prepare.R
+    needs:
+    - generate_incident
+    - generate_procedure
+    outputs:
+      highly_sensitive:
+        cohorts: output/internal/*.rds
+        flow: output/internal/flow.csv
+        quality: output/internal/quality.csv
+  describe:
+    run: r:v2 analysis/descriptive.R
+    needs:
+    - prepare
+    outputs:
+      highly_sensitive:
+        counts: output/internal/counts.csv
+  analyse_outcomes:
+    run: r:v2 analysis/outcomes.R
+    needs:
+    - prepare
+    outputs:
+      highly_sensitive:
+        curves: output/internal/curves.csv
+        estimates: output/internal/survival_estimates.csv
+        diagnostics: output/internal/survival_diagnostics.csv
+  analyse_trends:
+    run: r:v2 analysis/trends.R
+    needs:
+    - generate_trends_2017
+    - generate_trends_2018
+    - generate_trends_2019
+    - generate_trends_2020
+    - generate_trends_2021
+    - generate_trends_2022
+    - generate_trends_2023
+    - generate_trends_2024
+    - generate_trends_2025
+    outputs:
+      highly_sensitive:
+        rates: output/internal/rates.csv
+        estimates: output/internal/its_estimates.csv
+        diagnostics: output/internal/its_diagnostics.csv
+  analyse_covid:
+    run: r:v2 analysis/covid.R
+    needs:
+    - generate_covid_2020
+    - generate_covid_2021
+    - generate_covid_2022
+    - generate_covid_2023
+    - generate_covid_2024
+    - generate_covid_2025
+    outputs:
+      highly_sensitive:
+        rates: output/internal/covid_rates.csv
+        estimates: output/internal/covid_estimates.csv
+        diagnostics: output/internal/covid_diagnostics.csv
+  prepare_release:
+    run: r:v2 analysis/release.R
+    needs:
+    - describe
+    - analyse_outcomes
+    - analyse_trends
+    - analyse_covid
+    outputs:
+      moderately_sensitive:
+        population: output/release/01_population_pathways*.csv
+        rates: output/release/02_rates*.csv
+        curves: output/release/03_outcome_curves*.csv
+        models: output/release/04_models_diagnostics*.csv
+      highly_sensitive:
+        manifest: output/internal/release_manifest.csv

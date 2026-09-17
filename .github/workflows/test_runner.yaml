@@ -1,17 +1,26 @@
-name: Test that the project is runnable
-
+name: Run the synthetic OpenSAFELY workflow
 on: [push, workflow_dispatch]
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  DOCKER_RO_TOKEN: ${{ secrets.DOCKER_RO_TOKEN }}
-  STATA_LICENSE: ${{ secrets.STATA_LICENSE }}
-  HONEYCOMB_API_KEY: ${{ secrets.HONEYCOMB_API_KEY }}
+permissions:
+  contents: read
 jobs:
-  test:
+  run:
     runs-on: ubuntu-latest
-    name: Test the project can run, using dummy data
+    timeout-minutes: 90
     steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Test that the project is runnable
-      uses: opensafely-core/research-action@v2
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.11'
+      - name: Install the validated OpenSAFELY CLI
+        run: python -m pip install opensafely==1.56.8
+      - name: Create synthetic source tables
+        run: python analysis/local/make_dummy_tables.py --n 16000
+      - name: Execute the production graph on synthetic tables
+        run: python analysis/local/run_local.py --fresh
+      - name: Confirm production YAML was restored
+        if: always()
+        run: |
+          if grep -q -- '--dummy-' project.yaml; then
+            echo 'A local dummy override was left in production YAML'
+            exit 1
+          fi

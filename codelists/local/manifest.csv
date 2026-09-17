@@ -1,0 +1,10 @@
+file,sha256,source
+codelists/local/covid_confirmed.csv,6e71977f7162de0f916ab7351865e29402a506d7fc9203a820509542954c7231,OpenSAFELY primary-care COVID 507a5797; confirmed-code subset 840539006 and 1240581000000104
+codelists/local/major_amputation.csv,1a301802c4f2250faedf9c1ecd08b771db4279ecb6d127d6705227b8299ec5b1,"OPCS-4 X09.1-X09.5, X09.8-X09.9; admission-based major amputation"
+codelists/local/minor_amputation.csv,7dc5aa92dc6f642cf53fdc6bb0174cd28ba43c24f915b837640cdb71508d0a73,OPCS-4 X10/X11; X10.1 retained as minor under the primary UK administrative convention
+codelists/local/pad_hospital.csv,f6550814e5af6ddf883b3a5d756189f8cb79442b7da9c57f3a21eb60fb479d6e,ICD-10 I70.2 and I73.9 prefixes
+codelists/local/pad_primary.csv,1d5ac9441aa05bd1cf634d8b29304c88c795fa96e2f7837508d516e4c181b94b,NHSD PAD_COD 726949a4; chronic subset excluding 723870003 and 307406004
+codelists/local/revasc_endo.csv,094f5e1a8c938136b42a35bf5889ed2c0c0880669c58cf6ae600d6274c41f24a,Birmpili et al. 2022; doi:10.1016/j.eclinm.2022.101738; supplementary eTable 1; endovascular procedures
+codelists/local/revasc_endo_specific.csv,aed9a15b8a2f7f64b40853a1d3f3237872dab4ec6552f104b04e62c469ff6eef,Birmpili et al. 2022; supplementary eTable 1; anatomically explicit aorto-iliac/lower-limb endovascular subset
+codelists/local/revasc_open.csv,0a674f99c5722a4d8364b8b2328ba447d2630202c66987ad0317905c4b315683,Birmpili et al. 2022; doi:10.1016/j.eclinm.2022.101738; supplementary eTable 1; open procedures
+codelists/local/revasc_open_specific.csv,c9816917a18d2966e864336f46002129c8e1455e508df0c78708defa2c3364d5,Birmpili et al. 2022; supplementary eTable 1; anatomically explicit aorto-iliac/lower-limb open subset

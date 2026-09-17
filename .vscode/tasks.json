@@ -6,7 +6,7 @@
         {
             "label": "OpenSAFELY run project",
             "type": "shell",
-            "command": "opensafely run run_all -f",
+            "command": "python3 analysis/local/run_local.py",
             "problemMatcher": [],
             "group": {
                 "kind": "build",
