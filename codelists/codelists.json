@@ -1,3 +1,46 @@
 {
-  "files": {}
+  "files": {
+    "opensafely-ethnicity-snomed-0removed.csv": {
+      "id": "opensafely/ethnicity-snomed-0removed/22911876",
+      "url": "https://www.opencodelists.org/codelist/opensafely/ethnicity-snomed-0removed/22911876/",
+      "downloaded_at": "2026-09-17 11:46:33.002477Z",
+      "sha": "d95a2f826299563aa57f6fa99009e6e13a65151b"
+    },
+    "bristol-multimorbidity_diabetes.csv": {
+      "id": "bristol/multimorbidity_diabetes/2ad8f0b0",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_diabetes/2ad8f0b0/",
+      "downloaded_at": "2026-09-17 11:46:33.147856Z",
+      "sha": "b9eb6e79ba7d1ae8afa07091bc904f14ea3ab96d"
+    },
+    "primis-covid19-vacc-uptake-ckd35.csv": {
+      "id": "primis-covid19-vacc-uptake/ckd35/7980326d",
+      "url": "https://www.opencodelists.org/codelist/primis-covid19-vacc-uptake/ckd35/7980326d/",
+      "downloaded_at": "2026-09-17 11:46:33.300057Z",
+      "sha": "2e2e33d85817844bb8922fc6c87583c898f61ec5"
+    },
+    "opensafely-smoking-clear.csv": {
+      "id": "opensafely/smoking-clear/2020-04-29",
+      "url": "https://www.opencodelists.org/codelist/opensafely/smoking-clear/2020-04-29/",
+      "downloaded_at": "2026-09-17 11:46:33.434438Z",
+      "sha": "0b5f3afe1db96dcce5141220e893a42ba2e5a8f7"
+    },
+    "bristol-multimorbidity_coronary-heart-disease.csv": {
+      "id": "bristol/multimorbidity_coronary-heart-disease/6b200f80",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_coronary-heart-disease/6b200f80/",
+      "downloaded_at": "2026-09-17 11:46:33.626476Z",
+      "sha": "c3577375defc551cee91886eabd6db5b70a53a38"
+    },
+    "bristol-multimorbidity_stroketransient-ischemic-attack.csv": {
+      "id": "bristol/multimorbidity_stroketransient-ischemic-attack/39012916",
+      "url": "https://www.opencodelists.org/codelist/bristol/multimorbidity_stroketransient-ischemic-attack/39012916/",
+      "downloaded_at": "2026-09-17 11:46:33.746172Z",
+      "sha": "b62119e7502058e4eb4183d21cee753811096898"
+    },
+    "nhsd-primary-care-domain-refsets-pad_cod.csv": {
+      "id": "nhsd-primary-care-domain-refsets/pad_cod/726949a4",
+      "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/pad_cod/726949a4/",
+      "downloaded_at": "2026-09-17 11:46:33.872813Z",
+      "sha": "f3a33d8792fcd458f728b4dbaed103e5cead9a0c"
+    }
+  }
 }

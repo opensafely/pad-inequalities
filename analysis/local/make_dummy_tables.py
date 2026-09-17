@@ -9,7 +9,16 @@ def plus(d,n):return d+datetime.timedelta(days=n)
 def dt():return plus(start,rng.randrange((end-start).days+1))
 from functools import lru_cache
 @lru_cache(None)
-def lst(name):return list(csv.DictReader((r/'codelists'/f'{name}.csv').open()))
+def lst(name):
+ files={
+  'ethnicity':'opensafely-ethnicity-snomed-0removed',
+  'smoking':'opensafely-smoking-clear',
+  'diabetes':'bristol-multimorbidity_diabetes',
+  'ckd':'primis-covid19-vacc-uptake-ckd35',
+  'chd':'bristol-multimorbidity_coronary-heart-disease',
+  'stroke':'bristol-multimorbidity_stroketransient-ischemic-attack',
+ }
+ return list(csv.DictReader((r/'codelists'/f'{files[name]}.csv').open()))
 eth={i:[x['code'] for x in lst('ethnicity') if x['Grouping_6']==str(i)][0] for i in range(1,6)}
 smoke={x['Category']:x['CTV3Code'] for x in lst('smoking')}
 rows={k:[] for k in ['patients','practice_registrations','addresses','clinical_events','apcs','ons_deaths','sgss_covid_all_tests']}

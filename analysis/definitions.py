@@ -12,7 +12,13 @@ def bounded_date(value):
 def codes(name):
     return codelist_from_csv('codelists/local/'+name+'.csv', column='code')
 def condition(name):
-    return codelist_from_csv('codelists/'+name+'.csv', column='code')
+    files={
+        'diabetes':'bristol-multimorbidity_diabetes',
+        'ckd':'primis-covid19-vacc-uptake-ckd35',
+        'chd':'bristol-multimorbidity_coronary-heart-disease',
+        'stroke':'bristol-multimorbidity_stroketransient-ischemic-attack',
+    }
+    return codelist_from_csv('codelists/'+files[name]+'.csv', column='code')
 pad_codes=codes('pad_primary')
 pad_hospital=codes('pad_hospital')
 gp_pad=clinical_events.where(clinical_events.snomedct_code.is_in(pad_codes))
@@ -34,8 +40,8 @@ proc_condition=apcs.all_procedures.contains_any_of(codes('revasc_open')+codes('r
 all_procedures=apcs.where(context).except_where(nonvascular).where(proc_condition)
 specific_procedures={k:apcs.where(context).except_where(nonvascular).where(apcs.all_procedures.contains_any_of(codes('revasc_'+k+'_specific'))) for k in ['open','endo']}
 first_procedure=all_procedures.sort_by(apcs.admission_date,apcs.apcs_ident).first_for_patient()
-ethnicity_codes=codelist_from_csv('codelists/ethnicity.csv',column='code',category_column='Grouping_6')
-smoking_codes=codelist_from_csv('codelists/smoking.csv',column='CTV3Code',category_column='Category')
+ethnicity_codes=codelist_from_csv('codelists/opensafely-ethnicity-snomed-0removed.csv',column='code',category_column='Grouping_6')
+smoking_codes=codelist_from_csv('codelists/opensafely-smoking-clear.csv',column='CTV3Code',category_column='Category')
 def registration(date):
     return practice_registrations.for_patient_on(date)
 def eligible(date):

@@ -131,11 +131,11 @@ code,term
 24471000000103,Type 2 diabetic on insulin
 24481000000101,Type 2 diabetic on diet only
 279291000000109,Diabetes type 1 review
-279301000000108,Diabetes type 1 review
-279311000000105,Diabetes type 1 review
+279301000000108,Diabetes type 1 review 
+279311000000105,Diabetes type 1 review 
 279321000000104,Diabetes type 2 review
-279331000000102,Diabetes type 2 review
-279341000000106,Diabetes type 2 review
+279331000000102,Diabetes type 2 review 
+279341000000106,Diabetes type 2 review 
 28032008,Insulin dependent diabetes mellitus type IB
 28331000119107,Retinal edema due to type 2 diabetes mellitus
 290002008,Brittle type 1 diabetes mellitus
@@ -294,7 +294,7 @@ code,term
 741000119101,Chronic kidney disease stage 2 due to type 2 diabetes mellitus
 751000119104,Chronic kidney disease stage 1 due to type 2 diabetes mellitus
 754121000000107,Type II diabetic dietary review
-754131000000109,Type 2 diabetic dietary review
+754131000000109,Type 2 diabetic dietary review 
 754461000000105,Referral to type I diabetes structured education programme
 761000119102,Dyslipidemia due to type 2 diabetes mellitus
 769219006,Macular edema due to type 1 diabetes mellitus
@@ -335,9 +335,9 @@ code,term
 87491000119107,Ulcer of forefoot due to type 1 diabetes mellitus
 87921000119104,Cranial nerve palsy due to type 2 diabetes mellitus
 888191000000107,Type I diabetes mellitus in remission
-888201000000109,Type I diabetes mellitus in remission
+888201000000109,Type I diabetes mellitus in remission 
 888211000000106,Type II diabetes mellitus in remission
-888221000000100,Type II diabetes mellitus in remission
+888221000000100,Type II diabetes mellitus in remission 
 90721000119101,Chronic kidney disease stage 1 due to type 1 diabetes mellitus
 90731000119103,Chronic kidney disease stage 2 due to type 1 diabetes mellitus
 90741000119107,Chronic kidney disease stage 3 due to type 1 diabetes mellitus
