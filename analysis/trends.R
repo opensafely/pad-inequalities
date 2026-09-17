@@ -1,7 +1,6 @@
 source('analysis/lib/common.R')
 suppressPackageStartupMessages(library(sandwich))
-x=rbindlist(lapply(Sys.glob('output/raw/trends_*.csv'),fread),fill=TRUE)
-x=x[!grepl('_contributors$',measure)]
+x=readRDS('output/internal/trends_checked.rds')
 x[,`:=`(date=as.Date(interval_start),events=as.numeric(numerator),py=as.numeric(denominator)/365.25)]
 x=x[py>0];x[,imd:=fifelse(grepl('^[1-5]',imd),substr(imd,1,1),'Unknown')]
 x[,year:=format(date,'%Y')]
@@ -24,7 +23,8 @@ for(g in c('Overall','imd')) {
 }
 # Annual marginal summaries; these have person-time, not distinct annual-person counts.
 for(g in c('region','ethnicity')) {
- q=x[measure %in% c('incidence_any','incidence_gp')]
+ q=x[measure %in% paste0(c('incidence_any','incidence_gp'),'_',g)]
+ q[,measure:=sub(paste0('_',g,'$'),'',measure)]
  q[,date:=as.Date(paste0(year,'-01-01'))]
  rates[[length(rates)+1]]=aggregate_rates(q,g,'year')
 }

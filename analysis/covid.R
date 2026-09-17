@@ -1,5 +1,5 @@
 source('analysis/lib/common.R');source('analysis/lib/poisson.R')
-x=rbindlist(lapply(Sys.glob('output/raw/covid_*.csv'),fread),fill=TRUE)
+x=readRDS('output/internal/covid_checked.rds')
 x=x[measure=='covid_pad' & denominator>0]
 x[,`:=`(events=as.numeric(numerator),py=as.numeric(denominator)/365.25,date=as.Date(interval_start))]
 x[,imd:=fifelse(grepl('^[1-5]',imd),substr(imd,1,1),'Unknown')]

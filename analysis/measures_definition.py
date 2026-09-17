@@ -3,6 +3,10 @@ from ehrql import Measures, INTERVAL, get_parameter, months, days, case, when, m
 from analysis.definitions import *
 year=get_parameter('year',type=int,default=2017)
 mode=get_parameter('mode',default='trends')
+if mode not in ('trends', 'covid'):
+    raise ValueError('mode must be trends or covid')
+if year not in range(2017 if mode == 'trends' else 2020, 2026):
+    raise ValueError('year is outside the study window')
 measures=Measures()
 measures.configure_dummy_data(population_size=1000)
 measures.configure_disclosure_control(enabled=False)
@@ -26,11 +30,16 @@ def add(name,event_date,groups,incident=False,covid=False):
     measures.define_measure(name=name,numerator=event,denominator=py,group_by=groups,intervals=intervals)
 
 if mode=='trends':
-    groups={k:cov[k] for k in ['age_band','sex','imd','region','ethnicity']}
+    # Only the joint strata required for standardisation and ITS are extracted.
+    # Region and ethnicity describe separate marginal incidence rates, not a
+    # five-way cross-tabulation of the whole population.
+    groups={k:cov[k] for k in ['age_band','sex','imd']}
     # GP-first includes a GP/hospital same-day tie, but not GP codes after hospital PAD.
     gp_incident=case(when(first_gp==first_pad).then(first_gp))
     for name,dt in [('incidence_any',first_pad),('incidence_gp',gp_incident)]:
         add(name,dt,groups,incident=True)
+        for group in ('region', 'ethnicity'):
+            add(name+'_'+group,dt,{group:cov[group]},incident=True)
     for name,frame in procedures.items():
         dt=frame.where(apcs.admission_date>=start).sort_by(apcs.admission_date,apcs.apcs_ident).first_for_patient().admission_date
         add('procedure_'+name,dt,groups)

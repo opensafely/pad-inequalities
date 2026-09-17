@@ -145,8 +145,8 @@ actions:
         curves: output/internal/curves.csv
         estimates: output/internal/survival_estimates.csv
         diagnostics: output/internal/survival_diagnostics.csv
-  analyse_trends:
-    run: r:v2 analysis/trends.R
+  check_trends:
+    run: r:v2 analysis/check_measures.R trends
     needs:
     - generate_trends_2017
     - generate_trends_2018
@@ -159,11 +159,19 @@ actions:
     - generate_trends_2025
     outputs:
       highly_sensitive:
+        checked: output/internal/trends_checked.rds
+        quality: output/internal/trends_quality.csv
+  analyse_trends:
+    run: r:v2 analysis/trends.R
+    needs:
+    - check_trends
+    outputs:
+      highly_sensitive:
         rates: output/internal/rates.csv
         estimates: output/internal/its_estimates.csv
         diagnostics: output/internal/its_diagnostics.csv
-  analyse_covid:
-    run: r:v2 analysis/covid.R
+  check_covid:
+    run: r:v2 analysis/check_measures.R covid
     needs:
     - generate_covid_2020
     - generate_covid_2021
@@ -171,6 +179,14 @@ actions:
     - generate_covid_2023
     - generate_covid_2024
     - generate_covid_2025
+    outputs:
+      highly_sensitive:
+        checked: output/internal/covid_checked.rds
+        quality: output/internal/covid_quality.csv
+  analyse_covid:
+    run: r:v2 analysis/covid.R
+    needs:
+    - check_covid
     outputs:
       highly_sensitive:
         rates: output/internal/covid_rates.csv
