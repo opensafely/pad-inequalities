@@ -21,7 +21,8 @@ def lst(name):
  return list(csv.DictReader((r/'codelists'/f'{files[name]}.csv').open()))
 eth={i:[x['code'] for x in lst('ethnicity') if x['Grouping_6']==str(i)][0] for i in range(1,6)}
 smoke={x['Category']:x['CTV3Code'] for x in lst('smoking')}
-rows={k:[] for k in ['patients','practice_registrations','addresses','clinical_events','apcs','ons_deaths','sgss_covid_all_tests']}
+rows={k:[] for k in ['patients','practice_registrations','addresses','clinical_events','apcs','ons_deaths']}
+covid_codes=[x['code'] for x in csv.DictReader((r/'codelists/local/covid_confirmed.csv').open())]
 def clinical(i,d,s='',c=''):rows['clinical_events'].append([i,d,s,c,''])
 spell=0
 def hospital(i,d,proc='',diag='I702',method='21'):
@@ -44,8 +45,19 @@ for i in range(1,a.n+1):
   if rng.random()<prob:clinical(i,D(2015,2,1),lst(com)[0]['code'])
  covid=plus(D(2020,3,1),rng.randint(0,1850)) if rng.random()<.75 else None
  if covid and (not death or covid<=death):
-  rows['sgss_covid_all_tests'].append([i,covid,'T',plus(covid,1)])
-  if i%3==0:clinical(i,covid,'840539006')
+  # GP-only, hospital-only, and both sources with different first dates.
+  if i%4 in (0,2,3):clinical(i,covid,rng.choice(covid_codes))
+  if i%4 in (1,2,3):
+   hd=plus(covid,7 if i%4==2 else -7 if i%4==3 else 0)
+   if not death or hd<=death:hospital(i,hd,diag=rng.choice(['U071','U072','J189||U071','J189||U072']))
+ # Non-case records must not create an acute COVID exposure.
+ if i%11==0:clinical(i,D(2020,1,15),rng.choice(['1240471000000102','1322871000000109','1325181000000106','840544004','292508471000119105']))
+ if i%13==0:hospital(i,D(2020,1,15),diag='U099')
+ # Qualifying codes outside the ascertainment window must also be ignored.
+ if i%17==0:clinical(i,D(2019,12,31),'840539006')
+ if i%23==0:hospital(i,D(2019,12,31),diag='U071')
+ if i%29==0:clinical(i,D(2025,7,1),'1300731000000106')
+ if i%31==0:hospital(i,D(2025,7,1),diag='U072')
  if has_pad:
   if i%3:clinical(i,index,'840580004')
   else:hospital(i,index,diag='I739')
@@ -57,7 +69,7 @@ for i in range(1,a.n+1):
      nxt=plus(pd,rng.randint(15,1250))
      if nxt<=end and (not death or nxt<=death):hospital(i,nxt,rng.choice(['L635','L592','X095','X111']))
  if death:rows['ons_deaths'].append([i,death,'I259'])
-headers={'patients':['patient_id','date_of_birth','sex','date_of_death'],'practice_registrations':['patient_id','start_date','end_date','practice_pseudo_id','practice_nuts1_region_name'],'addresses':['patient_id','address_id','start_date','end_date','imd_rounded'],'clinical_events':['patient_id','date','snomedct_code','ctv3_code','numeric_value'],'apcs':['patient_id','apcs_ident','admission_date','discharge_date','primary_diagnosis','all_diagnoses','all_procedures','admission_method'],'ons_deaths':['patient_id','date','underlying_cause_of_death'],'sgss_covid_all_tests':['patient_id','specimen_taken_date','is_positive','lab_report_date']}
+headers={'patients':['patient_id','date_of_birth','sex','date_of_death'],'practice_registrations':['patient_id','start_date','end_date','practice_pseudo_id','practice_nuts1_region_name'],'addresses':['patient_id','address_id','start_date','end_date','imd_rounded'],'clinical_events':['patient_id','date','snomedct_code','ctv3_code','numeric_value'],'apcs':['patient_id','apcs_ident','admission_date','discharge_date','primary_diagnosis','all_diagnoses','all_procedures','admission_method'],'ons_deaths':['patient_id','date','underlying_cause_of_death']}
 for name,data in rows.items():
  with (out/f'{name}.csv').open('w') as f:
   w=csv.writer(f);w.writerow(headers[name]);w.writerows(data)

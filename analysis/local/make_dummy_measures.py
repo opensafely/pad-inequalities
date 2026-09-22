@@ -48,12 +48,12 @@ for year in range(2020,2026):
         w=csv.writer(f);w.writerow(fields)
         for m in range(1,7 if year==2025 else 13):
             cells=defaultdict(lambda:[0,0])
-            states=['No recorded infection'] if year==2020 and m<=2 else ['No recorded infection','28-89','90-364']+(['365+'] if year>=2021 else [])
+            states=['No recorded COVID-19'] if year==2020 and m<=2 else ['No recorded COVID-19','28-89','90-364']+(['365+'] if year>=2021 else [])
             for i in range(480):
                 ai=rng.randrange(6);ii=rng.randrange(5);state=rng.choice(states);dm=rng.random()<.35;ckd=rng.random()<.25
                 values=[ages[ai],rng.choice(sexes),imds[ii],rng.choice(eths),'T' if dm else 'F','T' if ckd else 'F',rng.choice(['N','E','S']),rng.choice(regions),state]
                 pd=900*calendar.monthrange(year,m)[1]
-                intensity=(4+ai*.8)*(1.3-ii*.07)*(1.25 if dm else 1)*(1.15 if ckd else 1)*(1.15 if state!='No recorded infection' else 1)
+                intensity=(4+ai*.8)*(1.3-ii*.07)*(1.25 if dm else 1)*(1.15 if ckd else 1)*(1.15 if state!='No recorded COVID-19' else 1)
                 accumulate(cells,tuple(values),poisson(intensity),pd)
             for values,(events,pd) in sorted(cells.items()):
                 w.writerow(row('covid_pad',year,m,events,pd,values))

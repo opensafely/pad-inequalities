@@ -3,7 +3,7 @@ x=readRDS('output/internal/covid_checked.rds')
 x=x[measure=='covid_pad' & denominator>0]
 x[,`:=`(events=as.numeric(numerator),py=as.numeric(denominator)/365.25,date=as.Date(interval_start))]
 x[,imd:=fifelse(grepl('^[1-5]',imd),substr(imd,1,1),'Unknown')]
-x[,covid:=factor(covid,levels=c('No recorded infection','28-89','90-364','365+'))]
+x[,covid:=factor(covid,levels=c('No recorded COVID-19','28-89','90-364','365+'))]
 x[,calendar_month:=factor(format(date,'%Y-%m'))]
 rates=x[,.(events=sum(events),py=sum(py)),by=.(date=as.Date(paste0(format(date,'%Y'),'-01-01')),level=as.character(covid))]
 rates[,`:=`(measure='covid_pad',group='covid',frequency='year')]

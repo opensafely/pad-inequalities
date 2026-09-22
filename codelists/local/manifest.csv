@@ -1,5 +1,5 @@
 file,sha256,source
-codelists/local/covid_confirmed.csv,6e71977f7162de0f916ab7351865e29402a506d7fc9203a820509542954c7231,OpenSAFELY primary-care COVID 507a5797; confirmed-code subset 840539006 and 1240581000000104
+codelists/local/covid_confirmed.csv,8d8a2706efd68912863013ce382c864d0c64ce0b829714902642fccc965dcaee,"https://www.opencodelists.org/codelist/opensafely/covid-19-identification-primary-care/507a5797/ ; 34 explicit COVID diagnoses/positive antigen or RNA results; exclude test-only, antibody-only, organism/substance, medication, severity/rehabilitation and ongoing-symptom codes; not the full upstream phenotype"
 codelists/local/major_amputation.csv,1a301802c4f2250faedf9c1ecd08b771db4279ecb6d127d6705227b8299ec5b1,"OPCS-4 X09.1-X09.5, X09.8-X09.9; admission-based major amputation"
 codelists/local/minor_amputation.csv,7dc5aa92dc6f642cf53fdc6bb0174cd28ba43c24f915b837640cdb71508d0a73,OPCS-4 X10/X11; X10.1 retained as minor under the primary UK administrative convention
 codelists/local/pad_hospital.csv,f6550814e5af6ddf883b3a5d756189f8cb79442b7da9c57f3a21eb60fb479d6e,ICD-10 I70.2 and I73.9 prefixes

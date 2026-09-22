@@ -45,7 +45,7 @@ if mode=='trends':
         add('procedure_'+name,dt,groups)
 else:
     since=(start-first_covid).days
-    exposed=case(when(since>=365).then('365+'),when(since>=90).then('90-364'),when(since>=28).then('28-89'),otherwise='No recorded infection')
+    exposed=case(when(since>=365).then('365+'),when(since>=90).then('90-364'),when(since>=28).then('28-89'),otherwise='No recorded COVID-19')
     groups={k:cov[k] for k in ['age_band','sex','imd','ethnicity','diabetes','ckd','smoking','region']}
     groups['covid']=exposed
     add('covid_pad',first_pad,groups,incident=True,covid=True)

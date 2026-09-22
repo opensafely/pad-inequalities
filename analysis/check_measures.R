@@ -18,6 +18,8 @@ parts=lapply(years,function(year) {
   z=fread(file,colClasses='character',na.strings=c('','NA','nan','NaN'))
   if(!setequal(names(z),required)) fail(paste('unexpected columns in',year))
   if(!nrow(z) || !setequal(z$measure,measures)) fail(paste('missing or unexpected measures in',year))
+  if(mode=='covid' && any(is.na(z$covid) | !z$covid %in% c('No recorded COVID-19','28-89','90-364','365+')))
+    fail(paste('unexpected recorded-COVID exposure category in',year))
   starts=seq(as.Date(sprintf('%s-01-01',year)),by='month',length.out=if(year==2025) 6L else 12L)
   ends=seq(as.Date(sprintf('%s-02-01',year)),by='month',length.out=length(starts))-1L
   expected=data.table(interval_start=as.character(starts),interval_end=as.character(ends))

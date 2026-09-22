@@ -1,12 +1,10 @@
 """Shared, date-anchored definitions; all patient records remain highly sensitive."""
-from ehrql import case, when, codelist_from_csv, minimum_of, years, claim_permissions
-from ehrql.tables.tpp import patients, clinical_events, apcs, practice_registrations, addresses, ons_deaths, sgss_covid_all_tests
-claim_permissions('sgss_covid_all_tests')
+from ehrql import case, when, codelist_from_csv, minimum_of, years
+from ehrql.tables.tpp import patients, clinical_events, apcs, practice_registrations, addresses, ons_deaths
 START='2017-01-01'
 END='2025-06-30'
 clinical_events=clinical_events.where(clinical_events.date<=END)
 apcs=apcs.where(apcs.admission_date<=END)
-sgss_covid_all_tests=sgss_covid_all_tests.where(sgss_covid_all_tests.specimen_taken_date<=END)
 def bounded_date(value):
     return case(when(value<=END).then(value))
 def codes(name):
@@ -27,10 +25,16 @@ hospital_pad=apcs.where(apcs.all_diagnoses.contains_any_of(pad_hospital))
 first_hospital=hospital_pad.sort_by(apcs.admission_date, apcs.apcs_ident).first_for_patient().admission_date
 first_pad=minimum_of(first_gp,first_hospital)
 death=bounded_date(minimum_of(patients.date_of_death,ons_deaths.date))
+# Recorded COVID: explicit GP diagnosis/positive result or any-position hospital
+# U07.1/U07.2 (including clinically diagnosed COVID without laboratory confirmation).
+# GP subset excludes test procedures without a positive result, antibody-only,
+# organism/substance, medication, severity/rehabilitation and ongoing-symptom codes.
+# These dates are recording/admission dates, not infection-onset dates; absence of
+# a qualifying record does not establish absence of infection. No laboratory feed.
+covid_hospital_codes=codelist_from_csv('codelists/opensafely-covid-identification.csv',column='icd10_code')
 first_covid=minimum_of(
- sgss_covid_all_tests.where(sgss_covid_all_tests.is_positive).where(sgss_covid_all_tests.specimen_taken_date >= '2020-01-01').sort_by(sgss_covid_all_tests.specimen_taken_date).first_for_patient().specimen_taken_date,
  clinical_events.where(clinical_events.snomedct_code.is_in(codes('covid_confirmed'))).where(clinical_events.date >= '2020-01-01').sort_by(clinical_events.date).first_for_patient().date,
- apcs.where(apcs.all_diagnoses.contains('U071')).where(apcs.admission_date >= '2020-01-01').sort_by(apcs.admission_date,apcs.apcs_ident).first_for_patient().admission_date,
+ apcs.where(apcs.all_diagnoses.contains_any_of(covid_hospital_codes)).where(apcs.admission_date >= '2020-01-01').sort_by(apcs.admission_date,apcs.apcs_ident).first_for_patient().admission_date,
 )
 # Require recorded PAD by the spell; remove competing primary indications only.
 context=(apcs.all_diagnoses.contains_any_of(pad_hospital+["E105","E115","E135","E145"]) | (first_gp <= apcs.admission_date))

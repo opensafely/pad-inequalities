@@ -5,6 +5,7 @@ unlink(Sys.glob('output/release/0[1-4]_*.csv'))
 # Only controlled aggregate candidates are moderately sensitive. A human must review
 # the combined release (including earlier releases); automation cannot approve release.
 write_release=function(x,name){
+ x[,covid_definition:='GP diagnosis/positive result or hospital U07.1/U07.2; earliest recorded date']
  stopifnot(!any(grepl('patient_id|index_date|gp_pad_date|admission_date',names(x))))
  if(nrow(x)==0) stop(paste('Empty release table:',name))
  chunks=split(seq_len(nrow(x)),ceiling(seq_len(nrow(x))/4999))

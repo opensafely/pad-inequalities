@@ -25,8 +25,8 @@ for(cohort in c('incident','procedure')) {
  d[,gp_to_procedure_band:=fcase(is.na(gp_pad_date),'No GP PAD record by study end',gp_pad_date>procedure_date,'GP record after procedure admission',gp_pad_date==procedure_date,'Same day',as.numeric(procedure_date-gp_pad_date)<=30,'1-30 days before',as.numeric(procedure_date-gp_pad_date)<=90,'31-90 days before',as.numeric(procedure_date-gp_pad_date)<=365,'91-365 days before',default='More than 365 days before')]
  d[,emergency:=fcase(grepl('^2',procedure_admission_method),'Emergency',procedure_admission_method %in% c('11','12','13'),'Elective',default='Other/unknown')]
  d[,diagnosis_source:=fcase(gp_pad_date==hospital_pad_date,'GP and hospital same day',gp_pad_date==index_date,'GP first',default='Hospital first')]
- d[,covid_at_index:=fcase(is.na(first_covid_date)|first_covid_date>index_date,'No recorded infection',as.numeric(index_date-first_covid_date)<28,'0-27 days',as.numeric(index_date-first_covid_date)<90,'28-89 days',as.numeric(index_date-first_covid_date)<365,'90-364 days',default='365+ days')]
- d[,covid_at_index:=factor(covid_at_index,levels=c('No recorded infection','0-27 days','28-89 days','90-364 days','365+ days'))]
+ d[,covid_at_index:=fcase(is.na(first_covid_date)|first_covid_date>index_date,'No recorded COVID-19',as.numeric(index_date-first_covid_date)<28,'0-27 days',as.numeric(index_date-first_covid_date)<90,'28-89 days',as.numeric(index_date-first_covid_date)<365,'90-364 days',default='365+ days')]
+ d[,covid_at_index:=factor(covid_at_index,levels=c('No recorded COVID-19','0-27 days','28-89 days','90-364 days','365+ days'))]
  checks[[cohort]]=data.table(cohort=cohort,n=nrow(d),n_followup_zero=sum(d$followup_days<=0),n_death_discordant=sum(!is.na(d$ons_death_date)&!is.na(d$gp_death_date)&d$ons_death_date!=d$gp_death_date),n_index_after_end=sum(d$index_date>END))
  if(any(d$followup_days<=0)) stop('Invalid follow-up; inspect highly sensitive data-quality results')
  saveRDS(d,paste0('output/internal/',cohort,'.rds'))

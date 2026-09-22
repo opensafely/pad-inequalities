@@ -41,6 +41,18 @@
       "url": "https://www.opencodelists.org/codelist/nhsd-primary-care-domain-refsets/pad_cod/726949a4/",
       "downloaded_at": "2026-09-17 11:46:33.872813Z",
       "sha": "f3a33d8792fcd458f728b4dbaed103e5cead9a0c"
+    },
+    "opensafely-covid-19-identification-primary-care.csv": {
+      "id": "opensafely/covid-19-identification-primary-care/507a5797",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-19-identification-primary-care/507a5797/",
+      "downloaded_at": "2026-09-22 10:26:40.170367Z",
+      "sha": "6fe9ce480caab486bbba9e6a6b4b8e5ae94c4ace"
+    },
+    "opensafely-covid-identification.csv": {
+      "id": "opensafely/covid-identification/2020-06-03",
+      "url": "https://www.opencodelists.org/codelist/opensafely/covid-identification/2020-06-03/",
+      "downloaded_at": "2026-09-22 10:26:40.284327Z",
+      "sha": "124db6929439379b7dacd55ba26ae4f2ed9370bc"
     }
   }
 }

@@ -5,3 +5,5 @@ opensafely/smoking-clear/2020-04-29
 bristol/multimorbidity_coronary-heart-disease/6b200f80
 bristol/multimorbidity_stroketransient-ischemic-attack/39012916
 nhsd-primary-care-domain-refsets/pad_cod/726949a4
+opensafely/covid-19-identification-primary-care/507a5797
+opensafely/covid-identification/2020-06-03
